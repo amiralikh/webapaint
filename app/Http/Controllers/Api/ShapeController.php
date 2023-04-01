@@ -27,7 +27,7 @@ class ShapeController extends Controller
         $user = $request->user();
 
         // create a new shape with the request data and the authenticated user
-        $this->repo->store($request, $user);
+        $this->repo->store($request, $user->id);
 
         return response()->json(['message' => 'Shape created successfully']);
     }
