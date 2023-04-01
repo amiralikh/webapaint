@@ -19,7 +19,7 @@ class Drawing extends Model
     /**
      * Get the drawing shapes associated with this drawing.
      */
-    public function drawingShapes()
+    public function drawingShapes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(DrawingShape::class);
     }

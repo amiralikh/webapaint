@@ -16,43 +16,86 @@ class ShapeController extends Controller
         $this->repo = $shapeRepo;
     }
 
-
+    /**
+     * Store a newly created shape in storage.
+     *
+     * @param  \App\Http\Requests\Shapes\StoreRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(StoreRequest $request): \Illuminate\Http\JsonResponse
     {
         $user = $request->user();
-        $this->repo->store($request,$user);
-        return response()->json(['message' => 'shape created successfully']);
 
+        // create a new shape with the request data and the authenticated user
+        $this->repo->store($request, $user);
+
+        return response()->json(['message' => 'Shape created successfully']);
     }
 
+    /**
+     * Get all the shapes for a specific user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function userShapes(Request $request): \Illuminate\Http\JsonResponse
     {
         $user = $request->user();
+
+        // get all shapes for the authenticated user
         $shapes = $this->repo->getUserShapes($user->id);
+
         return response()->json(['shapes' => $shapes]);
-
     }
 
-    public function userShape($id,Request $request): \Illuminate\Http\JsonResponse
+    /**
+     * Get a specific shape for a user.
+     *
+     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userShape($id, Request $request): \Illuminate\Http\JsonResponse
     {
         $user = $request->user();
-        $shape = $this->repo->getShape($id,$user->id);
+
+        // get the shape with the given ID and for the authenticated user
+        $shape = $this->repo->getShape($id, $user->id);
+
         return response()->json(['shape' => $shape]);
-
     }
 
-    public function updateShape($id,Request $request): \Illuminate\Http\JsonResponse
+    /**
+     * Update the specified shape in storage.
+     *
+     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateShape($id, Request $request): \Illuminate\Http\JsonResponse
     {
         $user = $request->user();
-        $this->repo->update($id,$user->id,$request);
-        return response()->json(['message' => 'shape updated successfully']);
 
+        // update the shape with the given ID and for the authenticated user
+        $this->repo->update($id, $user->id, $request);
+
+        return response()->json(['message' => 'Shape updated successfully']);
     }
 
-    public function destroy($id,Request $request)
+    /**
+     * Remove the specified shape from storage.
+     *
+     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id, Request $request): \Illuminate\Http\JsonResponse
     {
         $user = $request->user();
-        $this->repo->destroy($id,$user->id);
-        return response()->json(['message' => 'shape removed successfully']);
+
+        // delete the shape with the given ID and for the authenticated user
+        $this->repo->destroy($id, $user->id);
+
+        return response()->json(['message' => 'Shape removed successfully']);
     }
 }
