@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('drawings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('name');
+            $table->string('name');
             $table->timestamps();
         });
     }
