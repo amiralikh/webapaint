@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('type');
             $table->string('color');
-            $table->decimal('radius');
-            $table->decimal('width');
-            $table->decimal('height');
+            $table->decimal('radius')->nullable();
+            $table->decimal('width')->nullable();
+            $table->decimal('height')->nullable();
             $table->timestamps();
         });
     }

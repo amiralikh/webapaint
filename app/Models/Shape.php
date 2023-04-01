@@ -9,6 +9,8 @@ class Shape extends Model
 {
     use HasFactory;
 
+    protected $fillable=['user_id','type','width','color','radius','height'];
+
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
