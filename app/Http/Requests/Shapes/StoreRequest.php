@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Shapes;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -22,7 +23,11 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type' => ['required',Rule::in('circle','rectangular')],
+            'color' => ['required', Rule::in(['red', 'blue', 'green'])],
+            'width' => 'required_if:type,rectangular|numeric| min:0',
+            'height' => 'required_if:type,rectangular|numeric| min:0',
+            'radius' => 'required_if:type,circle|numeric| min:0'
         ];
     }
 }

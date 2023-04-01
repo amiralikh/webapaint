@@ -11,7 +11,7 @@ class ShapeRepo
         return Shape::query()->where('user_id',$user)->get();
     }
 
-    public function create($request,$user)
+    public function store($request,$user)
     {
         Shape::created([
             'user_id' => $user
