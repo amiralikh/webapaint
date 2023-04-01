@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
-class ShapeControllerTest extends TestCase
+class DrawingControllerTest extends TestCase
 {
     use RefreshDatabase;
 
