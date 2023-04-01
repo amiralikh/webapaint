@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function shapes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Shape::class,'user_id');
+    }
 }
