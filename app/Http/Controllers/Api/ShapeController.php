@@ -1,101 +1,87 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Tests\Unit;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Shapes\StoreRequest;
-use App\Repository\Shapes\ShapeRepo;
-use Illuminate\Http\Request;
+use App\Models\Shape;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Tests\TestCase;
 
-class ShapeController extends Controller
+class ShapeControllerTest extends TestCase
 {
-    protected $repo;
+    use RefreshDatabase;
 
-    public function __construct(ShapeRepo $shapeRepo)
+    private $user;
+
+    public function setUp(): void
     {
-        $this->repo = $shapeRepo;
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+        Auth::login($this->user);
     }
 
-    /**
-     * Store a newly created shape in storage.
-     *
-     * @param  \App\Http\Requests\Shapes\StoreRequest  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(StoreRequest $request): \Illuminate\Http\JsonResponse
+    /** @test */
+    public function index_method_returns_all_shapes_associated_with_authenticated_user()
     {
-        $user = $request->user();
+        $shapes = Shape::factory()->count(2)->create(['user_id' => $this->user->id]);
 
-        // create a new shape with the request data and the authenticated user
-        $this->repo->store($request, $user->id);
+        $response = $this->get(route('shapes.index'));
 
-        return response()->json(['message' => 'Shape created successfully']);
+        $response->assertStatus(200);
+        $response->assertJsonCount(2, 'data');
+        foreach ($shapes as $shape) {
+            $response->assertJsonFragment(['id' => $shape->id]);
+        }
     }
 
-    /**
-     * Get all the shapes for a specific user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function userShapes(Request $request): \Illuminate\Http\JsonResponse
+    /** @test */
+    public function store_method_creates_a_single_shape_associated_with_authenticated_user()
     {
-        $user = $request->user();
+        $data = Shape::factory()->make()->toArray();
 
-        // get all shapes for the authenticated user
-        $shapes = $this->repo->getUserShapes($user->id);
+        $response = $this->post(route('shapes.store'), $data);
 
-        return response()->json(['shapes' => $shapes]);
+        $response->assertStatus(201);
+        $response->assertJsonFragment(['user_id' => $this->user->id] + $data);
+        $this->assertDatabaseHas('shapes', ['user_id' => $this->user->id] + $data);
     }
 
-    /**
-     * Get a specific shape for a user.
-     *
-     * @param  int  $id
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function userShape($id, Request $request): \Illuminate\Http\JsonResponse
+    /** @test */
+    public function show_method_returns_single_shape_associated_with_authenticated_user()
     {
-        $user = $request->user();
+        $shape = Shape::factory()->create(['user_id' => $this->user->id]);
 
-        // get the shape with the given ID and for the authenticated user
-        $shape = $this->repo->getShape($id, $user->id);
+        $response = $this->get(route('shapes.show', $shape->id));
 
-        return response()->json(['shape' => $shape]);
+        $response->assertStatus(200);
+        $response->assertJson(['data' => $shape->toArray()]);
     }
 
-    /**
-     * Update the specified shape in storage.
-     *
-     * @param  int  $id
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateShape($id, Request $request): \Illuminate\Http\JsonResponse
+    /** @test */
+    public function update_method_updates_a_single_shape_associated_with_authenticated_user()
     {
-        $user = $request->user();
+        $shape = Shape::factory()->create(['user_id' => $this->user->id]);
+        $data = Shape::factory()->make()->toArray();
 
-        // update the shape with the given ID and for the authenticated user
-        $this->repo->update($id, $user->id, $request);
+        $response = $this->put(route('shapes.update', $shape->id), $data);
 
-        return response()->json(['message' => 'Shape updated successfully']);
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['user_id' => $this->user->id] + $data);
+        $this->assertDatabaseHas('shapes', ['id' => $shape->id] + ['user_id' => $this->user->id] + $data);
     }
 
-    /**
-     * Remove the specified shape from storage.
-     *
-     * @param  int  $id
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy($id, Request $request): \Illuminate\Http\JsonResponse
+    /** @test */
+    public function destroy_method_deletes_a_single_shape_associated_with_authenticated_user_and_returns_no_content()
     {
-        $user = $request->user();
+        $shape = Shape::factory()->create(['user_id' => $this->user->id]);
 
-        // delete the shape with the given ID and for the authenticated user
-        $this->repo->destroy($id, $user->id);
+        $response = $this->delete(route('shapes.destroy', $shape->id));
 
-        return response()->json(['message' => 'Shape removed successfully']);
+        $response->assertNoContent();
+        $this->assertDatabaseMissing('shapes', ['id' => $shape->id]);
     }
 }
