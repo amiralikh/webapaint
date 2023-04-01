@@ -9,6 +9,11 @@ class Drawing extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['drawing_id',
+        'shape_id',
+        'x',
+        'y'];
+
 
 
     /**

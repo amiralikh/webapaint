@@ -6,12 +6,12 @@ use App\Models\Shape;
 
 class ShapeRepo
 {
-    public function getUserShapes($user): \Illuminate\Database\Eloquent\Collection|array
+    public function getUserShapes($user_id): \Illuminate\Database\Eloquent\Collection|array
     {
-        return Shape::query()->where('user_id',$user)->get();
+        return Shape::query()->where('user_id',$user_id)->get();
     }
 
-    public function store($request,$user)
+    public function store($request,$user_id)
     {
         Shape::created([
             'user_id' => $user
@@ -23,14 +23,14 @@ class ShapeRepo
         ]);
     }
 
-    public function getShape($id,$user): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
+    public function getShape($id,$user_id): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
     {
         return Shape::query()->where(['id'=>$id,'user_id'=>$user])->firstOrFail();
     }
 
-    public function update($id,$user,$request): void
+    public function update($id,$user_id,$request): void
     {
-        $this->getShape($id,$user)->update([
+        $this->getShape($id,$user_id)->update([
             'type' => $request->input('type')
             ,'width' => $request->input('width')
             ,'height' => $request->input('height')
@@ -39,8 +39,8 @@ class ShapeRepo
         ]);
     }
 
-    public function destroy($id,$user): void
+    public function destroy($id,$user_id): void
     {
-        $this->getShape($id,$user)->delete();
+        $this->getShape($id,$user_id)->delete();
     }
 }

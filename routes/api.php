@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::group(['middleware'=>['auth:sanctum']],function () {
+   Route::get('shapes',[\App\Http\Controllers\Api\ShapeController::class,'userShapes']);
+   Route::post('shapes',[\App\Http\Controllers\Api\ShapeController::class,'store']);
+   Route::get('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'userShape']);
+   Route::put('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'updateShape']);
+   Route::delete('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'destroy']);
+   Route::get('drawings',[\App\Http\Controllers\Api\DrawingController::class,'userDrawings']);
+   Route::post('drawings',[\App\Http\Controllers\Api\DrawingController::class,'store']);
+   Route::get('drawing/{drawing_id}',[\App\Http\Controllers\Api\DrawingController::class,'userDrawing']);
+   Route::put('drawing/{drawing_id}',[\App\Http\Controllers\Api\DrawingController::class,'updateDrawing']);
+   Route::delete('drawing/{drawing_id}',[\App\Http\Controllers\Api\DrawingController::class,'destroy']);
+
 });
