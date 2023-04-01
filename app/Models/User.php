@@ -42,8 +42,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Get the drawings associated with the user.
+     */
+    public function drawings(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Drawing::class);
+    }
+
+    /**
+     * Get the shapes associated with the user.
+     */
     public function shapes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Shape::class,'user_id');
+        return $this->hasMany(Shape::class);
     }
 }
