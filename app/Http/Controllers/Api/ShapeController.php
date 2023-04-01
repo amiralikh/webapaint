@@ -23,6 +23,9 @@ class ShapeController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $this->repo->store($request);
+        $user = $request->user();
+        $this->repo->store($request,$user);
+        return response()->json(['message' => 'shape created successfully']);
+
     }
 }
