@@ -12,6 +12,7 @@ class Drawing extends Model
     protected $fillable = ['drawing_id',
         'shape_id',
         'x',
+        'name',
         'y'];
 
 

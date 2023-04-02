@@ -11,7 +11,6 @@ class DrawRepo
     {
         // Get the authenticated user
         $user = $request->user();
-
         // Create the new drawing
         $drawing = $user->drawings()->create([
             'name' => $request->input('name'),
@@ -29,7 +28,7 @@ class DrawRepo
     public function userDrawings($request)
     {
         $user = $request->user();
-        return $user->drawings();
+        return Drawing::with('shapes')->where('user_id',$user->id)->get();
     }
 
     public function userDrawing($id,$request): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
@@ -70,7 +69,7 @@ class DrawRepo
 
     public function destroy($id,$request)
     {
-        $user = $request->uset();
+        $user = $request->user();
         $drawing = Drawing::where('user_id', $user->id)
             ->where('id', $id)
             ->firstOrFail();
