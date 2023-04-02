@@ -56,7 +56,6 @@ class ShapeRepo
      *
      * @param  int  $id
      * @param  int  $userId
-     * @param \Illuminate\Http\Request $request
      * @return void
      */
     public function update(int $id, int $userId, $request): void

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Drawing;
 
-class DrawRepoTest extends TestCase
+class DrawingRepoTest extends TestCase
 {
     use RefreshDatabase;
 

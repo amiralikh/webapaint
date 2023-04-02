@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
-class ShapeController extends TestCase
+class ShapeControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -29,7 +29,7 @@ class ShapeController extends TestCase
     {
         $shapes = Shape::factory()->count(2)->create(['user_id' => $this->user->id]);
 
-        $response = $this->get(route('shapes.index'));
+        $response = $this->get(route('user.shapes'));
 
         $response->assertStatus(200);
         $response->assertJsonCount(2, 'data');
@@ -43,7 +43,7 @@ class ShapeController extends TestCase
     {
         $data = Shape::factory()->make()->toArray();
 
-        $response = $this->post(route('shapes.store'), $data);
+        $response = $this->post(route('user.shape.store'), $data);
 
         $response->assertStatus(201);
         $response->assertJsonFragment(['user_id' => $this->user->id] + $data);
@@ -55,7 +55,7 @@ class ShapeController extends TestCase
     {
         $shape = Shape::factory()->create(['user_id' => $this->user->id]);
 
-        $response = $this->get(route('shapes.show', $shape->id));
+        $response = $this->get(route('user.shape.show', $shape->id));
 
         $response->assertStatus(200);
         $response->assertJson(['data' => $shape->toArray()]);
@@ -67,7 +67,7 @@ class ShapeController extends TestCase
         $shape = Shape::factory()->create(['user_id' => $this->user->id]);
         $data = Shape::factory()->make()->toArray();
 
-        $response = $this->put(route('shapes.update', $shape->id), $data);
+        $response = $this->put(route('user.shape.update', $shape->id), $data);
 
         $response->assertStatus(200);
         $response->assertJsonFragment(['user_id' => $this->user->id] + $data);
@@ -79,7 +79,7 @@ class ShapeController extends TestCase
     {
         $shape = Shape::factory()->create(['user_id' => $this->user->id]);
 
-        $response = $this->delete(route('shapes.destroy', $shape->id));
+        $response = $this->delete(route('user.shape.destroy', $shape->id));
 
         $response->assertNoContent();
         $this->assertDatabaseMissing('shapes', ['id' => $shape->id]);

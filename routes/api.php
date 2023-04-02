@@ -14,15 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::post('login',[\App\Http\Controllers\Api\AuthController::class,'loginUser']);
 
 Route::group(['middleware'=>['auth:sanctum']],function () {
-   Route::get('shapes',[\App\Http\Controllers\Api\ShapeController::class,'userShapes']);
-   Route::post('shapes',[\App\Http\Controllers\Api\ShapeController::class,'store']);
-   Route::get('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'userShape']);
-   Route::put('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'updateShape']);
-   Route::delete('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'destroy']);
+   Route::get('shapes',[\App\Http\Controllers\Api\ShapeController::class,'userShapes'])->name('user.shapes');
+   Route::post('shapes',[\App\Http\Controllers\Api\ShapeController::class,'store'])->name('user.shape.store');
+   Route::post('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'userShape'])->name('user.shape.show');
+   Route::put('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'updateShape'])->name('user.shape.update');
+   Route::delete('shapes/{shape_id}',[\App\Http\Controllers\Api\ShapeController::class,'destroy'])->name('user.shape.destroy');
    Route::get('drawings',[\App\Http\Controllers\Api\DrawingController::class,'userDrawings']);
    Route::post('drawings',[\App\Http\Controllers\Api\DrawingController::class,'store']);
    Route::get('drawing/{drawing_id}',[\App\Http\Controllers\Api\DrawingController::class,'userDrawing']);

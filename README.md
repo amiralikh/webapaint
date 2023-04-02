@@ -10,7 +10,8 @@
 ## About Laravel
 
 this project develop by Laravel 10.5 , mySQL , php 8.1
-also this project does not have any UI or login/register. it's just technical test project and authentication is not required but for middleware and basic authentication by default i use sanctum.
+also this project does not have any UI or login/register. 
+it's just technical test project and authentication is not required but for middleware and basic authentication by default i use sanctum with passing just user_id (authentication is not very secure and because of that i dont use email and password).
 
 ## Installation
 - clone project

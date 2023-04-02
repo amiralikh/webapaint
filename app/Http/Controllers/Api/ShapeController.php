@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shapes\StoreRequest;
+use App\Http\Requests\Shapes\UpdateRequest;
 use App\Repository\Shapes\ShapeRepo;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ShapeController extends Controller
@@ -20,9 +22,9 @@ class ShapeController extends Controller
      * Store a newly created shape in storage.
      *
      * @param  \App\Http\Requests\Shapes\StoreRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function store(StoreRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StoreRequest $request): JsonResponse
     {
         $user = $request->user();
 
@@ -36,9 +38,9 @@ class ShapeController extends Controller
      * Get all the shapes for a specific user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function userShapes(Request $request): \Illuminate\Http\JsonResponse
+    public function userShapes(Request $request): JsonResponse
     {
         $user = $request->user();
 
@@ -53,9 +55,9 @@ class ShapeController extends Controller
      *
      * @param  int  $id
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function userShape($id, Request $request): \Illuminate\Http\JsonResponse
+    public function userShape($id, Request $request): JsonResponse
     {
         $user = $request->user();
 
@@ -69,13 +71,11 @@ class ShapeController extends Controller
      * Update the specified shape in storage.
      *
      * @param  int  $id
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateShape($id, Request $request): \Illuminate\Http\JsonResponse
+    public function updateShape($id, UpdateRequest $request): JsonResponse
     {
         $user = $request->user();
-
         // update the shape with the given ID and for the authenticated user
         $this->repo->update($id, $user->id, $request);
 
@@ -87,9 +87,9 @@ class ShapeController extends Controller
      *
      * @param  int  $id
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy($id, Request $request): \Illuminate\Http\JsonResponse
+    public function destroy($id, Request $request): JsonResponse
     {
         $user = $request->user();
 
