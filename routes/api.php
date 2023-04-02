@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::post('login',[\App\Http\Controllers\Api\AuthController::class,'loginUser']);
+
 Route::group(['middleware'=>['auth:sanctum']],function () {
    Route::get('shapes',[\App\Http\Controllers\Api\ShapeController::class,'userShapes']);
    Route::post('shapes',[\App\Http\Controllers\Api\ShapeController::class,'store']);

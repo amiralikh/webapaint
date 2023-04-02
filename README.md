@@ -9,13 +9,14 @@
 
 ## About Laravel
 
-this project develop by Laravel 10.5 and mySQL
+this project develop by Laravel 10.5 , mySQL , php 8.1
 also this project does not have any UI or login/register. it's just technical test project and authentication is not required but for middleware and basic authentication by default i use sanctum.
 
 ## Installation
 - clone project
 - cp .env.example and rename as .env
 - enter database connections details
+- `composer install`
 - `php artisan key:generate`
 - `php artisan migrate`
 - `php artisan db:seed` -- this step is optional only if you want seeding your database use it
