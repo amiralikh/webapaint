@@ -26,11 +26,9 @@ class DrawingShapeFactory extends Factory
             'shape_id' => Shape::factory()->create()->id,
             'x' => $this->faker->numberBetween(0, 100),
             'y' => $this->faker->numberBetween(0, 100),
-            'z' => $this->faker->numberBetween(0, 100),
             'width' => $this->faker->numberBetween(10, 100),
             'height' => $this->faker->numberBetween(10, 100),
-            'rotation' => $this->faker->numberBetween(0, 360),
-            'color' => $this->faker->hexColor(),
+            'color' => $this->faker->randomElement(['square', 'circle', 'rectangle']),
         ];
     }
 }
